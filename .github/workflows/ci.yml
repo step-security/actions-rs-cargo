@@ -1,0 +1,20 @@
+name: Continuous integration
+
+on: [ pull_request, push ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test
+      - name: Dist up to date?
+        run: git diff --exit-code dist/
